@@ -1,16 +1,20 @@
-use clap::{command, ArgGroup, Command};
+use std::path::PathBuf;
 
-fn cli() -> Command {
-  command!().group(ArgGroup::new("pack"))
+use clap::{command, Parser};
+
+#[derive(Parser)]
+#[command(version, about = "RustyTerra CLI", long_about = None)]
+struct Cli {
+  #[arg(short, long, value_name = "FILE")]
+  wasm: PathBuf,
+
+  #[arg(short, long, value_name = "COMPRESS-TYPE", default_value = "gzip")]
+  compress: Option<String>,
 }
 
 fn main() {
-  let matches = cli().get_matches();
+  let cli = Cli::parse();
 
-  match matches.subcommand() {
-    Some(("pack", _)) => {
-      println!("pack");
-    }
-    _ => unreachable!(),
-  }
+  println!("WASM: {}", cli.wasm.display());
+  println!("COMPRESS: {}", cli.compress.unwrap_or("gzip".to_string()));
 }
