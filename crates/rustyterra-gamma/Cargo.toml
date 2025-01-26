@@ -2,7 +2,7 @@
 name = "rustyterra-gamma"
 version = "0.1.0"
 authors = ["sh1kxrv"]
-edition = "2021"
+edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

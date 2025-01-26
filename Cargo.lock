@@ -205,10 +205,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustyterra-core"
-version = "0.0.1"
-
-[[package]]
 name = "rustyterra-gamma"
 version = "0.1.0"
 dependencies = [

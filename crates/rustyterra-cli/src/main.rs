@@ -14,7 +14,4 @@ struct Cli {
 
 fn main() {
   let cli = Cli::parse();
-
-  println!("WASM: {}", cli.wasm.display());
-  println!("COMPRESS: {}", cli.compress.unwrap_or("gzip".to_string()));
 }

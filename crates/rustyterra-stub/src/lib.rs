@@ -4,7 +4,7 @@ use js_sys::{Function, Object, Reflect, WebAssembly};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::{spawn_local, JsFuture};
 
-const WASM: &[u8] = include_bytes!("2pac.wasm");
+const WASM: &[u8] = include_bytes!("rustyterra_gamma_bg.wasm");
 
 #[wasm_bindgen]
 extern "C" {
@@ -21,12 +21,13 @@ async fn run_async() -> Result<(), JsValue> {
 
   let a = JsFuture::from(WebAssembly::instantiate_buffer(WASM, &Object::new())).await?;
   let b: WebAssembly::Instance = Reflect::get(&a, &"instance".into())?.dyn_into()?;
-
   let c = b.exports();
 
-  // let add = Reflect::get(c.as_ref(), &"run".into())?
-  //   .dyn_into::<Function>()
-  //   .expect("add export wasn't a function");
+  let run = Reflect::get(c.as_ref(), &"run".into())?
+    .dyn_into::<Function>()
+    .expect("run export wasn't a function");
+
+  run.call0(&JsValue::undefined())?;
 
   // let three = add.call2(&JsValue::undefined(), &1.into(), &2.into())?;
   // console_log!("1 + 2 = {:?}", three);

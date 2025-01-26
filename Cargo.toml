@@ -3,7 +3,6 @@ resolver = "2"
 
 members = [
   "crates/rustyterra-cli",
-  "crates/rustyterra-core",
   "crates/rustyterra-stub",
   "crates/rustyterra-gamma",
 ]
@@ -14,7 +13,6 @@ description = "Rusty Terra | Wasm Packer"
 
 [workspace.dependencies]
 rustyterra-cli = { path = "./crates/rustyterra-cli" }
-rustyterra-core = { path = "./crates/rustyterra-core" }
 rustyterra-stub = { path = "./crates/rustyterra-stub" }
 rustyterra-gamma = { path = "./crates/rustyterra-gamma" }
 
