@@ -1,12 +1,6 @@
 version: '3'
 
 tasks:
-  run-cli:
+  run:cli:
     cmds:
-      - cargo run -p rustyterra-cli -- -i playtest/input.wasm -o playtest/output.wasm
-  pack-stub:
-    cmds:
-      - wasm-pack build ./crates/rustyterra-stub --target web --out-dir wasm
-  pack-gamma:
-    cmds:
-      - wasm-pack build ./crates/rustyterra-gamma --target web --out-dir wasm
+      - cargo run -p rustyterra-cli
