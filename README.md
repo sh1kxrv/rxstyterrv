@@ -12,7 +12,7 @@
 <td valign="top">
 
 ```js
-function getRandomIntInclusive(min, max) {
+function randInt(min, max) {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
   return Math.floor(
@@ -26,7 +26,7 @@ function getRandomIntInclusive(min, max) {
 </td><td valign="top">
 
 ```js
-export function getRandomIntInclusive(min, max) {
+function randInt(min, max) {
   return $$rterra.a(min, max);
 }
 ```
