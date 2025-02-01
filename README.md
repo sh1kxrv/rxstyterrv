@@ -12,21 +12,22 @@
 <td valign="top">
 
 ```js
-// MDN
 function getRandomIntInclusive(min, max) {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
-  return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+  return Math.floor(
+    Math.random() * 
+    (maxFloored - minCeiled + 1) 
+    + minCeiled
+  );
 }
 ```
 
 </td><td valign="top">
 
 ```js
-// WASM Stash
-const a = window.a;
 export function getRandomIntInclusive(min, max) {
-  return a.b(min, max);
+  return $$rterra.a(min, max);
 }
 ```
 
