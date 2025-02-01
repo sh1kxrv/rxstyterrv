@@ -1,0 +1,11 @@
+[package]
+name = "rustyterra-core"
+edition = "2021"
+version.workspace = true
+description.workspace = true
+
+[dependencies]
+oxc = { version = "*", features = ["full"] }
+
+[lints]
+workspace = true

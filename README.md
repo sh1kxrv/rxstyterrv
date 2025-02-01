@@ -6,7 +6,7 @@
 
 ## What is this?
 
-This is a WASM module's packer
+WASM JS Anti-Tamper
 
 ## Requirements
 - ...

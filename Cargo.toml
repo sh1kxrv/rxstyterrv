@@ -2,19 +2,18 @@
 resolver = "2"
 
 members = [
-  "crates/rustyterra-cli",
-  "crates/rustyterra-stub",
-  "crates/rustyterra-gamma",
+  "crates/cli",
+  "crates/core",
+  "crates/stub"
 ]
 
 [workspace.package]
 version = "0.0.1"
-description = "Rusty Terra | Wasm Packer"
+description = "Rusty Terra"
 
 [workspace.dependencies]
-rustyterra-cli = { path = "./crates/rustyterra-cli" }
-rustyterra-stub = { path = "./crates/rustyterra-stub" }
-rustyterra-gamma = { path = "./crates/rustyterra-gamma" }
+rustyterra-cli = { path = "./crates/cli" }
+rustyterra-core = { path = "./crates/core" }
 
 [workspace.lints.rust]
 rust_2018_idioms = { level = "warn", priority = -1 }
