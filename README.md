@@ -1,4 +1,4 @@
-# RxstyTerrv | Rusty Terra
+# RxstyTerrv | Minimalistic JS VM
 
 > [!WARNING]
 > 🚧 The application is in an active stage of development
@@ -12,22 +12,16 @@
 <td valign="top">
 
 ```js
-function randInt(min, max) {
-  const minCeiled = Math.ceil(min);
-  const maxFloored = Math.floor(max);
-  return Math.floor(
-    Math.random() * 
-    (maxFloored - minCeiled + 1) 
-    + minCeiled
-  );
+function add(a, b) {
+  return a + b
 }
 ```
 
 </td><td valign="top">
 
 ```js
-function randInt(min, max) {
-  return $$rterra.a(min, max);
+function add(a, b) {
+  return $vm([0x0,0x0,0xA,0x6,0x1], a, b)
 }
 ```
 
