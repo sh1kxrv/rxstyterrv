@@ -1,30 +1,26 @@
 use oxc::{
-  allocator::{Allocator, CloneIn},
+  allocator::{self, Allocator, CloneIn},
   ast::{ast::Program, AstBuilder},
-  span,
 };
 
-use crate::analyzer::Analyzer;
-
 pub struct Transformer<'a> {
-  pub allocator: &'a Allocator,
   pub ast_builder: AstBuilder<'a>,
+  pub allocator: &'a Allocator,
 }
 
 impl<'a> Transformer<'a> {
-  pub fn new(analyzer: Analyzer<'a>) -> Self {
-    let Analyzer { allocator, .. } = analyzer;
+  pub fn new(allocator: &'a Allocator) -> Self {
     Self {
+      ast_builder: AstBuilder::new(allocator),
       allocator,
-      ast_builder: AstBuilder::new(analyzer.allocator),
     }
   }
 
-  fn transform(&self, node: &'a mut Program<'a>) -> Program<'a> {
+  pub fn transform_program(&self, node: &'a Program<'a>) -> Program<'a> {
     let Program {
       span,
-      source_text,
       source_type,
+      source_text,
       comments,
       hashbang,
       directives,
@@ -32,7 +28,11 @@ impl<'a> Transformer<'a> {
       ..
     } = node;
 
-    let mut body = self.
+    let mut transformed_body = self.ast_builder.vec();
+
+    for statement in body {
+      println!("Transforming statement {statement:?}");
+    }
 
     self.ast_builder.program(
       *span,
@@ -41,7 +41,7 @@ impl<'a> Transformer<'a> {
       self.clone_node(comments),
       self.clone_node(hashbang),
       self.clone_node(directives),
-      body,
+      transformed_body,
     )
   }
 }

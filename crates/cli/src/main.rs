@@ -1,17 +1,8 @@
 mod brotli;
 
-use std::{
-  fs,
-  path::{Path, PathBuf},
-};
+use std::path::PathBuf;
 
 use clap::{command, Parser as ClapParser};
-use oxc::{
-  allocator::Allocator,
-  parser::{Parser, ParserReturn},
-  semantic::{SemanticBuilder, SemanticBuilderReturn},
-  span::SourceType,
-};
 
 #[derive(ClapParser)]
 #[command(version, about = "RustyTerra CLI", long_about = None)]
@@ -20,15 +11,7 @@ struct Cli {
   entrypoint: PathBuf,
 }
 
-fn file2string(path: &PathBuf) -> String {
-  let path = Path::new(path);
-  if !path.exists() {
-    panic!("file does not exist");
-  }
-  fs::read_to_string(path).unwrap()
-}
-
 fn main() {
   let cli = Cli::parse();
-  rustyterra_core::run_tamper(&cli.entrypoint);
+  let result = rustyterra_core::run(&cli.entrypoint);
 }

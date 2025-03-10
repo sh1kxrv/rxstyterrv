@@ -1,36 +1,52 @@
-mod analyzer;
-mod anti_tamper;
 mod io;
-mod nodes;
 mod transformer;
-mod utils;
 
 use std::path::PathBuf;
 
-use anti_tamper::AntiTamper;
-use oxc::{allocator::Allocator, parser::Parser, span::SourceType};
+use oxc::{
+  allocator::Allocator,
+  ast::{ast::Function, visit::walk, Visit},
+  parser::{ParseOptions, Parser},
+  semantic::ScopeFlags,
+  span::SourceType,
+};
 
-pub fn run_tamper(entrypoint_path: &PathBuf) {
+pub fn run(entrypoint_path: &PathBuf) -> Result<(), String> {
   let entrypoint_readed = io::read_file(entrypoint_path);
   let source_type = SourceType::from_path(&entrypoint_path).unwrap();
-  let allocator = Allocator::default();
-  let anti_tamper = AntiTamper::new(&allocator);
 
-  let parser = Parser::new(&allocator, entrypoint_readed.as_str(), source_type);
-  let mut parsed = parser.parse();
+  let allocator = Allocator::new();
+  let ret = Parser::new(&allocator, &entrypoint_readed, source_type)
+    .with_options(ParseOptions {
+      parse_regular_expression: true,
+      ..ParseOptions::default()
+    })
+    .parse();
 
-  let errors = parsed
-    .errors
-    .iter()
-    .map(|e| e.to_string())
-    .collect::<Vec<_>>();
-
-  if parsed.panicked {
-    for error in errors {
-      eprintln!("{error}");
+  if ret.errors.is_empty() {
+    println!("Parsed Successfully.");
+  } else {
+    for error in ret.errors {
+      let error = error.with_source_code(entrypoint_readed.clone());
+      println!("{error:?}");
+      println!("Parsed with Errors.");
     }
   }
 
-  let result = anti_tamper.run(&mut parsed.program);
-  todo!()
+  let program = ret.program;
+
+  let mut ast_pass = TestingAST::default();
+  ast_pass.visit_program(&program);
+
+  Ok(())
+}
+
+#[derive(Debug, Default)]
+struct TestingAST {}
+
+impl<'a> Visit<'a> for TestingAST {
+  fn visit_function(&mut self, func: &Function<'a>, flags: ScopeFlags) {
+    println!("Visiting function {}", func.name().unwrap());
+    walk::walk_function(self, func, flags);
+  }
 }
