@@ -1,5 +1,5 @@
 use oxc::{
-  allocator::{self, Allocator, CloneIn},
+  allocator::{Allocator, CloneIn},
   ast::{ast::Program, AstBuilder},
 };
 
@@ -28,7 +28,7 @@ impl<'a> Transformer<'a> {
       ..
     } = node;
 
-    let mut transformed_body = self.ast_builder.vec();
+    let transformed_body = self.ast_builder.vec();
 
     for statement in body {
       println!("Transforming statement {statement:?}");

@@ -10,3 +10,8 @@ pub fn read_file(path: &PathBuf) -> String {
   }
   fs::read_to_string(path).unwrap()
 }
+
+pub fn write_file(path: &PathBuf, content: &str) {
+  let path = Path::new(path);
+  fs::write(path, content).unwrap();
+}

@@ -1,11 +1,13 @@
 mod io;
-mod transformer;
+mod node;
+pub mod transformer;
 
 use std::path::PathBuf;
 
 use oxc::{
   allocator::Allocator,
   ast::{ast::Function, visit::walk, Visit},
+  codegen::{CodeGenerator, CodegenOptions},
   parser::{ParseOptions, Parser},
   semantic::ScopeFlags,
   span::SourceType,
@@ -16,6 +18,8 @@ pub fn run(entrypoint_path: &PathBuf) -> Result<(), String> {
   let source_type = SourceType::from_path(&entrypoint_path).unwrap();
 
   let allocator = Allocator::new();
+  let transformer = transformer::Transformer::new(&allocator);
+
   let ret = Parser::new(&allocator, &entrypoint_readed, source_type)
     .with_options(ParseOptions {
       parse_regular_expression: true,
@@ -37,6 +41,18 @@ pub fn run(entrypoint_path: &PathBuf) -> Result<(), String> {
 
   let mut ast_pass = TestingAST::default();
   ast_pass.visit_program(&program);
+
+  allocator.alloc(transformer.transform_program(&program));
+
+  let codegen = CodeGenerator::new().with_options(CodegenOptions {
+    comments: false,
+    minify: false,
+    ..Default::default()
+  });
+
+  let builded = codegen.build(&program);
+
+  io::write_file(&PathBuf::from("test.js"), &builded.code);
 
   Ok(())
 }
